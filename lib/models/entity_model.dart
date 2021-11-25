@@ -21,11 +21,19 @@ abstract class TabularSection {
 }
 
 abstract class Document {
-  String? internalDocumentNumber;
+  String internalDocumentNumber;
   String? externalDocumentNumber;
-  DateTime? documentDate;
+  DateTime documentDate;
   bool posted = false;
   bool deletionMark = false;
+
+  Document(
+    this.internalDocumentNumber,
+    this.externalDocumentNumber,
+    this.documentDate,
+    this.posted,
+    this.deletionMark,
+  );
 }
 
 class GoodsTabularSection extends TabularSection {
@@ -56,7 +64,7 @@ class Warehouse implements Reference {
   @override
   String name = '';
 
-  Warehouse({required id, required name});
+  Warehouse({required this.id, required this.name});
 
   factory Warehouse.fromJson(Map<String, dynamic> json) {
     return Warehouse(
@@ -73,7 +81,7 @@ class TradePoint implements Reference {
   @override
   String name = '';
 
-  TradePoint({required id, required name});
+  TradePoint({required this.id, required this.name});
 
   factory TradePoint.fromJson(Map<String, dynamic> json) {
     return TradePoint(
@@ -90,7 +98,7 @@ class Organization implements Reference {
   @override
   String name = '';
 
-  Organization({required id, required name});
+  Organization({required this.id, required this.name});
 
   factory Organization.fromJson(Map<String, dynamic> json) {
     return Organization(
@@ -99,20 +107,3 @@ class Organization implements Reference {
     );
   }
 }
-
-// class Manager implements Reference {
-//   @override
-//   String id = '';
-
-//   @override
-//   String name = '';
-
-//   Manager({required id, required name});
-
-//   factory Manager.fromJson(Map<String, dynamic> json) {
-//     return Manager(
-//       id: json['id'] as String,
-//       name: json['name'] as String,
-//     );
-//   }
-// }

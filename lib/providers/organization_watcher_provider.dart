@@ -10,15 +10,19 @@ class OrganizationWatcher with ChangeNotifier {
     notifyListeners();
   }
 
-  void addNewOrganization(Organization organization) {
-    Repo.addOrganization(organization);
-    updateLocalOrganizations();
-    // notifyListeners();
-  }
+  // void addNewOrganization(Organization organization) {
+  //   Repo.addOrganization(organization);
+  //   updateLocalOrganizations();
+  //   // notifyListeners();
+  // }
 
-  void removeOrganization(Organization organization) {
-    Repo.removeOrganization(organization);
-    updateLocalOrganizations();
+  // void removeOrganization(Organization organization) {
+  //   Repo.removeOrganization(organization);
+  //   updateLocalOrganizations();
+  // }
+
+  void setChosenOrganization(Organization organization) {
+    Repo.setChosenOrganization(organization);
   }
 
   void setCurrentOrganization(Organization organization) {

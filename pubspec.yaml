@@ -31,6 +31,10 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   provider: ^6.0.1
+  uuid: ^3.0.5
+  intl: ^0.17.0
+  validators: ^3.0.0
+
   # platform_device_id: ^1.0.1   
 
 

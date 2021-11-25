@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_traid/providers/main_screen_watcher_provider.dart';
+import 'package:mobile_traid/widgets/invoice/invoice_list_widget.dart';
 import 'package:provider/src/provider.dart';
 
 class MainScreenWidget extends StatelessWidget {
@@ -14,7 +15,7 @@ class MainScreenWidget extends StatelessWidget {
       body: IndexedStack(
         index: context.watch<MainScreenWatcher>().bottomNavIndex,
         children: [
-          Container(),
+          InvoiceListWidget(),
           Container(),
           const MainWidget(),
         ],

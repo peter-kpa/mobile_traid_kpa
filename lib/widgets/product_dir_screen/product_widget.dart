@@ -76,9 +76,19 @@ class ProductWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 onTap: () {
                   var tw = context.read<ProductWatcher>();
+                  context
+                      .read<ProductWatcher>()
+                      .setChosenProduct(tw.products[index]);
+                  Navigator.pop(context);
+                },
+                onDoubleTap: () {
+                  var tw = context.read<ProductWatcher>();
                   tw.onTapHandler(tw.products[index]);
                   context.read<ProductWatcher>().parentId =
-                      Navigator.of(context).pushNamed('/productCard', arguments: tw.products[index]).toString();
+                      Navigator.of(context)
+                          .pushNamed('/productCard',
+                              arguments: tw.products[index])
+                          .toString();
                 }
                 // () => onTapHandler(products[index]),
                 ),

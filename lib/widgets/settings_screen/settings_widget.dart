@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_traid/api/api.dart';
 import 'package:mobile_traid/database/database.dart';
 import 'package:mobile_traid/repository/repo.dart';
-import 'package:mobile_traid/providers/manager_watcher_provider.dart';
+//import 'package:mobile_traid/providers/manager_watcher_provider.dart';
+import 'package:mobile_traid/models/entity_model.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
@@ -182,39 +183,137 @@ class DefaultSettinsWidget extends StatefulWidget {
 }
 
 class _DefaultSettinsWidgetState extends State<DefaultSettinsWidget> {
-  void _goToOrganizations(context) {
-    Navigator.of(context).pushNamed('/choiceOrganizations');
+  void _goToOrganizations(context) async {
+    await Navigator.of(context).pushNamed('/choiceOrganizations');
+    setState(() {});
+  }
+
+  void _goToWarehouses(context) async {
+    await Navigator.of(context).pushNamed('/choiceWarehouses');
+    setState(() {});
+  }
+
+  String _getChosenOrganizationName() {
+    String name = '<не выбрано>';
+    if (Repo.getChosenOrganization() != null) {
+      name = Repo.getChosenOrganization()!.name;
+    }
+    return name;
+  }
+
+  String _getChosenWarehouseName() {
+    String name = '<не выбрано>';
+    if (Repo.getChosenWarehouse() != null) {
+      name = Repo.getChosenWarehouse()!.name;
+    }
+    return name;
+  }
+
+  void _setDefaultValues() {
+    Warehouse chosenWarehouse;
+    Organization chosenOrganization;
+    if (Repo.getChosenWarehouse() != null) {
+      chosenWarehouse = Repo.getChosenWarehouse()!;
+      Repo.setCurrentWarehouse(chosenWarehouse);
+    }
+    if (Repo.getChosenOrganization() != null) {
+      chosenOrganization = Repo.getChosenOrganization()!;
+      Repo.setCurrentOrganization(chosenOrganization);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final manager = Repo.getCurrentManager();
+    const verticalDivider = SizedBox(
+      height: 20,
+    );
+    const labelTextStyle = TextStyle(
+        color: Colors.blue,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.normal);
+    const labelBoxDecoration = BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      border: Border(
+        top: BorderSide(width: 2.0, color: Colors.blue),
+        left: BorderSide(width: 2.0, color: Colors.blue),
+        right: BorderSide(width: 2.0, color: Colors.blue),
+        bottom: BorderSide(width: 2.0, color: Colors.blue),
+      ),
+    );
+
+    Widget labelGroup(String label) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+            width: 110,
+            height: 20,
+            child: Text(
+              label,
+              style: labelTextStyle,
+            )),
+      );
+    }
+
+    //final manager = Repo.getCurrentManager();
     return Column(
       children: [
         Column(
           children: [
+            verticalDivider,
             Row(children: [
-              const Text('Склад:'),
-              const Text('Выбранный склад'),
+              labelGroup('Склад:'),
               ElevatedButton(
-                onPressed: () => {_goToOrganizations(context)},
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(const Size(200, 20)),
+                ),
+                onPressed: () => {_goToWarehouses(context)},
                 child: const Text('Выбрать склад'),
               ),
             ]),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 30,
+                constraints: const BoxConstraints.expand(height: 30),
+                //alignment: AlignmentGeometry,
+                decoration: labelBoxDecoration,
+                child: Center(
+                  child: Text(_getChosenWarehouseName(),
+                      textAlign: TextAlign.center, style: labelTextStyle),
+                ),
+              ),
+            ),
+            verticalDivider,
             Row(
               children: [
-                const Text('Организация:'),
-                const Text('Выбранная организация'),
+                labelGroup('Организация:'),
                 ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(const Size(200, 20)),
+                  ),
                   onPressed: () => {_goToOrganizations(context)},
                   child: const Text('Выбрать организацию'),
                 ),
               ],
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 30,
+                constraints: const BoxConstraints.expand(height: 30),
+                decoration: labelBoxDecoration,
+                child: Center(
+                  child: Text(_getChosenOrganizationName(),
+                      textAlign: TextAlign.center, style: labelTextStyle),
+                ),
+              ),
+            ),
+            verticalDivider,
           ],
         ),
         ElevatedButton(
-          onPressed: () => {}, //_setDefaultValues,
+          onPressed: () => {_setDefaultValues()},
           child: const Text('Установить значения по умолчанию'),
         ),
       ],

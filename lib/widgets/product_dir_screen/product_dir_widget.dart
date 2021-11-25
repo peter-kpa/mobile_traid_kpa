@@ -45,7 +45,8 @@ class ProductDirWidget extends StatelessWidget {
       body: ListView.builder(
         // padding: EdgeInsets.only(top: 70),
         // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        itemCount: context.read<ProductWatcher>().products.length, //products.length,
+        itemCount:
+            context.read<ProductWatcher>().products.length, //products.length,
         itemExtent: 85,
         itemBuilder: (BuildContext context, int index) {
           return context.read<ProductWatcher>().products[index].isGroup
@@ -56,6 +57,7 @@ class ProductDirWidget extends StatelessWidget {
     );
   }
 }
+
 
 
 // @override

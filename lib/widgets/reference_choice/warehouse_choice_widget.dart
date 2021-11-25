@@ -1,56 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_traid/api/api.dart';
 //import 'package:mobile_traid/models/manager_model.dart';
-import 'package:mobile_traid/providers/organization_watcher_provider.dart';
+import 'package:mobile_traid/providers/warehouse_watcher_provider.dart';
 import 'package:mobile_traid/repository/repo.dart';
-import 'package:mobile_traid/widgets/reference_choice/organization_widget.dart';
+import 'package:mobile_traid/widgets/reference_choice/warehouse_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_traid/models/entity_model.dart';
 
-class ChoiceOrganizationWidget extends StatefulWidget {
-  const ChoiceOrganizationWidget({Key? key}) : super(key: key);
+class ChoiceWarehouseWidget extends StatefulWidget {
+  const ChoiceWarehouseWidget({Key? key}) : super(key: key);
 
   @override
-  State<ChoiceOrganizationWidget> createState() =>
-      _ChoiceOrganizationWidgetState();
+  State<ChoiceWarehouseWidget> createState() => _ChoiceWarehouseWidgetState();
 }
 
-class _ChoiceOrganizationWidgetState extends State<ChoiceOrganizationWidget> {
-  List<Organization> organizations = [];
+class _ChoiceWarehouseWidgetState extends State<ChoiceWarehouseWidget> {
+  List<Warehouse> warehouses = [];
   var visibleLoadIndicator = true;
   // final Function onTapHandler;
 
-  void onTapHandler(Organization organization) {
-    context.read<OrganizationWatcher>().setChosenOrganization(organization);
+  void onTapHandler(Warehouse warehouse) {
+    context.read<WarehouseWatcher>().setChosenWarehouse(warehouse);
     Navigator.pop(context);
   }
 
   @override
   void initState() {
     super.initState();
-    fillOrganizations();
+    fillWarehouses();
   }
 
-  Future<String> fillOrganizations() async {
-    List<Organization> data = [];
+  Future<String> fillWarehouses() async {
+    List<Warehouse> data = [];
     final manager = Repo.getCurrentManager();
-    data = await Api.getOrganizations(manager: manager);
+    data = await Api.getWarehouses(manager: manager);
 
-    for (Organization organization in data) {
+    for (Warehouse warehouse in data) {
       if (Repo.getLocalOrganizations().isEmpty) {
-        organizations.add(organization);
+        warehouses.add(warehouse);
         continue;
       }
 
       bool flag = true;
-      for (Organization localOrganization in Repo.getLocalOrganizations()) {
-        if (localOrganization.name == organization.name) {
+      for (Warehouse localWarehouse in Repo.getLocalWarehouses()) {
+        if (localWarehouse.name == warehouse.name) {
           flag = false;
           break;
         }
       }
 
-      if (flag == true) organizations.add(organization);
+      if (flag == true) warehouses.add(warehouse);
     }
 
     setState(() {
@@ -75,12 +74,12 @@ class _ChoiceOrganizationWidgetState extends State<ChoiceOrganizationWidget> {
             ListView.builder(
               // padding: EdgeInsets.only(top: 70),
               // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              itemCount: organizations.length, //products.length,
+              itemCount: warehouses.length, //products.length,
               itemExtent: 50,
               itemBuilder: (BuildContext context, int index) {
-                return OrganizationWidget(
+                return WarehouseWidget(
                   dismiss: () {},
-                  organization: organizations[index],
+                  warehouse: warehouses[index],
                   onTapHandler: onTapHandler,
                   index: index,
                 );

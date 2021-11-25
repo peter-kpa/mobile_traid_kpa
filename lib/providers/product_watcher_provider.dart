@@ -37,4 +37,8 @@ class ProductWatcher with ChangeNotifier {
     products = Repo.getGroupsByParentId(parentId);
     notifyListeners();
   }
+
+  void setChosenProduct(Product product) {
+    Repo.setChosenProduct(product);
+  }
 }
